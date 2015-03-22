@@ -1,0 +1,82 @@
+<div class="container">
+
+<h1 align="center">Are you ready?</h1>
+ 
+  <table class="racer_table">
+    <p align="center" ><%= @player1 %> </p>
+    <p> Press "Enter" to move your sluggish ass!</p>
+    <tr id="player1_strip">
+    <td class="active"></td>
+    </tr>
+  </table>
+  <br>
+  <hr>
+ 
+  <table class="racer_table2">
+    <p align="center"><%= @player2 %> </p>
+    <p>GO PURRY!!!! HIT THAT SPACEBAR!</p>
+    <tr id="player2_strip">
+    <td class="active"></td>
+    </tr>
+  </table>
+ 
+  <script>
+          function myFunction() {
+             var row = $("tr#player1_strip").prepend('<td></td>','<td></td>')
+          }
+          function myFunction2() {
+             var row = $("tr#player2_strip").prepend('<td></td>','<td></td>')
+          }
+          function updateWinner(){
+            var posting = $.ajax({
+              method: "POST",
+              url: "/updatewinner",
+              data: {winner : winner, notwinner : notwinner},
+              dataType: "json",
+            })
+
+            posting.done(function( msg ) {
+                alert( msg["winner"] + ' has won!' );
+                window.location = "/"
+              });
+
+          }
+          
+          var p1counter = 1
+          var p2counter = 1
+          var winner = ""
+          var notwinner = ""
+          
+    
+              $(document).keyup(function(e) {
+               if (e.which == 13)
+                 { 
+                   myFunction();
+                   p1counter++
+                   console.log(p1counter)
+                     if (p1counter === 23 || p2counter === 23){
+                      winner = '<%=@player1%>'
+                      notwinner = '<%=@player2%>'
+                      updateWinner();
+                     };
+                 }
+               else if (e.which == 32)
+               {
+                 myFunction2();
+                 p2counter++
+                 console.log(p2counter)
+                   if (p1counter === 23 || p2counter === 23){
+                    winner = '<%=@player2%>'
+                    notwinner = '<%=@player1%>'
+                    updateWinner();
+                   };
+               };
+              });
+      
+
+  </script>
+
+  </br>
+     
+
+</div>
